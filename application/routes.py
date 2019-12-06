@@ -4,10 +4,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
-import datetime
+from datetime import datetime, timedelta
 from .models import Posts, Users, UserSchema, PostSchema
 
 blacklist = set()
+
 users_schema = UserSchema(many=True)
 user_schema = UserSchema()
 posts_schema = PostSchema(many=True)
@@ -22,10 +23,10 @@ def check_if_token_in_blacklist(decrypted_token):
 #User Registration
 @app.route('/users',methods=['POST'])
 def users():
-    email=request.form['email']
-    name=request.form['name']
-    password=sha256_crypt.encrypt(str(request.form['password']))
-    username=request.form['username']
+    email=request.json.get('email')
+    name=request.json.get('name')
+    password=sha256_crypt.encrypt(str(request.json.get('password')))
+    username=request.json.get('username')
     user_email=Users.query.filter_by(email=email).first()
     user_username=Users.query.filter_by(username=username).first()
 
@@ -40,13 +41,13 @@ def users():
 #User login
 @app.route('/login', methods=['POST'])
 def login():
-    username=request.form["username"]
-    password=request.form["password"]
+    username=request.json.get("username")
+    password=request.json.get("password")
     usernamecandidate=Users.query.filter_by(username=username).first()
     if usernamecandidate != None:
         if sha256_crypt.verify(password,usernamecandidate.password):
-            access_token = create_access_token(identity=username, expires_delta=datetime.timedelta(hours=3))
-            return jsonify({'msg':'Login succeed','access_token':access_token,'username':username})
+            access_token = create_access_token(identity=username, expires_delta=timedelta(hours=3))
+            return jsonify({'msg':'Login succeed','access_token':access_token,'username':username,'isLoggedIn':True})
         else:
             return jsonify({'msg':'Login faild. Wrong Password'}), 401
     else:
@@ -97,13 +98,15 @@ def posts():
         result=posts_schema.dump(posts_list)
         return jsonify(result)
     elif request.method == 'POST':
-        post=request.form['post']
+        post=request.json.get('post')
         username = get_jwt_identity()
         date=datetime.now()
         post_object=Posts(post,username,date)
         db.session.add(post_object)
         db.session.commit()
-        return jsonify({'msg':'Post added'}), 201
+        posts_list = Posts.query.all()
+        result=posts_schema.dump(posts_list)
+        return jsonify(result), 201
 
 #Delete a post
 @app.route('/posts/<int:id>',methods=['DELETE'])
@@ -128,4 +131,5 @@ def delete_post(id:int):
 def logout():
     jti = get_raw_jwt()['jti']
     blacklist.add(jti)
-    return jsonify({"msg": "Successfully logged out"}), 200
+    current_user = get_jwt_identity()
+    return jsonify({'msg':'Logout succeed','access_token':'','username':current_user,'isLoggedIn':False})
