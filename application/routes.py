@@ -109,21 +109,38 @@ def posts():
         return jsonify(result), 201
 
 #Delete a post
-@app.route('/posts/<int:id>',methods=['DELETE'])
+@app.route('/posts/<int:id>',methods=['DELETE','PUT'])
 @jwt_required
-def delete_post(id:int):
+def delete_put_post(id:int):
     post = Posts.query.filter_by(id=id).first()
     current_user = get_jwt_identity()
-    if post:
-        if post.username == current_user:
-            db.session.delete(post)
-            db.session.commit()
-            return jsonify({'msg':'Post is deleted'}), 202
-        else:
-            return jsonify({'msg':'Unauthorized'}), 401
 
-    else:
-        return jsonify({'msg':'This post does not exist in our database'}), 404
+    if request.method=='DELETE':
+        if post:
+            if post.username == current_user:
+                db.session.delete(post)
+                db.session.commit()
+                return jsonify({'msg':'Post Deleted'}), 202
+            else:
+                return jsonify({'msg':'Unauthorized'}), 401
+        else:
+            return jsonify({'msg':'This post does not exist in our database'}), 404
+
+    elif request.method=='PUT':
+        if post:
+            if post.username == current_user:
+                post.post=request.json.get('post')
+                post.date=datetime.now()
+                db.session.commit()
+                posts_list = Posts.query.all()
+                result=posts_schema.dump(posts_list)
+                return jsonify(result), 202
+            else:
+                return jsonify({'msg':'Unauthorized'}), 401
+        else:
+            return jsonify({'msg':'This post does not exist in our database'}), 404
+
+                   
 
 # Revoke user access token
 @app.route('/logout', methods=['DELETE'])

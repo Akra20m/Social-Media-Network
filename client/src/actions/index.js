@@ -38,5 +38,23 @@ export const logoutUser = (token) => async dispatch => {
     }
 }).catch(err => console.log(err.response));
     dispatch({type: 'LOGOUT_USER', payload: response.data});
+};
+
+export const deletePost = (token,id) => async dispatch => {
+    const response = await flaskAPI.delete(`/posts/${id}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).catch(err => console.log(err.response))
+    dispatch({type: 'DELETE_POST', payload: id});
+};
+
+export const editPost = (values,token,id) => async dispatch => {
+    const response = await flaskAPI.put(`/posts/${id}`,values, {
+        headers: {
+        Authorization: `Bearer ${token}`
+    }
+}).catch(err => console.log(err.response));
+    dispatch({type: 'EDIT_POST', payload: response.data});
 
 };
