@@ -3,6 +3,7 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {loginUser} from '../actions';
+import '../style.css';
 
 
 
@@ -21,25 +22,34 @@ class Login extends React.Component {
         this.props.loginUser(values)
     }
 
+    errormsg() {
+        if(this.props.user.status===422) {
+            return(
+                <div><p>Username/Password is incorrect</p></div>
+         );
+    }}
+
     render(){
-        if(this.props.isLoggedIn) {
+        if(this.props.user.isLoggedIn) {
             return <Redirect to='/dashboard' />
         }
+       
         return (
-            <div>
+            <div className="test">
             <h3>Login</h3>
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
+            <form className="test" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <Field name="username" label="Username" type="text" component={this.renderInput}/>
                 <Field name="password" label="Password" type="password" component={this.renderInput}/>
                 <button>Login</button>
             </form>
+            {this.errormsg()}
             </div>
         );
     }
 
 }
 const mapStateToProps = state => {
-    return {isLoggedIn: state.user.isLoggedIn}
+    return {user: state.user}
 };
 
 export default connect(mapStateToProps,{loginUser})(reduxForm({

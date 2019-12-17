@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom';
 import PostsLists from './PostsLists';
 import CreatePost from './CreatePost';
 import Logout from './Logout';
+import '../style.css';
 
 
 
@@ -14,11 +15,11 @@ class Dashboard extends React.Component {
             return <Redirect to='/' />
         }
         return (
-            <div>
-            <h3>Dashboard</h3>
+            <div className="test1">
+            <Logout/>
+            <h3 className="flex-component">Dashboard</h3>
             <CreatePost/>
             <PostsLists/>
-            <Logout/>
             </div>
         );
     }

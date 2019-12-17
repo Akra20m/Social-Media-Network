@@ -3,14 +3,16 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import Main from './Main';
 import PostEdit from './PostEdit';
 import Dashboard from './Dashboard';
+import '../style.css';
+
 
 class App extends React.Component {
 
     render(){
         return (
-        <div>
+        <div className="cover_page">
             <BrowserRouter>
-                <div>
+                <div className="cover_page">
                     <Route path="/" exact component={Main}/>
                     <Route path="/dashboard" exact component={Dashboard}/>
                     <Route path="/posts/edit/:id" exact component={PostEdit}/>

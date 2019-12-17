@@ -1,25 +1,33 @@
 import flaskAPI from '../api/flaskapi';
 
 export const createUser = values => async dispatch => {
-    const response = await flaskAPI.post('/users', values).catch(err => console.log(err.response));
-    
-    //add reducers to show the message
-    //dispatch({type:'CREATE_USER', payload:response.data});
-};
+    try {
+    const response = await flaskAPI.post('/users', values);
+    } catch(err) {
+        dispatch({type: 'REGISTER_ERROR', payload: {status:err.response.status}})
+    }  
+}
 
 export const loginUser = values => async dispatch => {
-    const response = await flaskAPI.post('/login',values).catch(err => console.log(err.response));
-    dispatch({type: 'LOGIN_USER', payload: response.data});
-};
+    try {
+        const response = await flaskAPI.post('/login',values);
+        dispatch({type: 'LOGIN_USER', payload: {...response.data, status:response.status}});
+    } catch(err) {
+      dispatch({type: 'LOGIN_ERROR', payload: {status:err.response.status}})
+    }
+}
 
 export const fetchPosts = (token) => async dispatch => {
-    const response = await flaskAPI.get('/posts', {
+    try {
+        const response = await flaskAPI.get('/posts', {
         headers: {
-        Authorization: `Bearer ${token}`
-    }
-}).catch(err => console.log(err.response));
-    dispatch({type: 'FETCH_POSTS', payload: response.data});
-};
+        Authorization: `Bearer ${token}`}});
+        dispatch({type: 'FETCH_POSTS', payload: response.data});
+    } catch(err) {
+        console.log(err.response);
+        dispatch({type: 'AUTH_ERROR', payload: {isLoggedIn: false, access_token: ""}})
+      }
+}
 
 export const createPost = (values,token) => async dispatch => {
     const response = await flaskAPI.post('/posts',values, {

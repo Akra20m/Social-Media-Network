@@ -2,6 +2,7 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {logoutUser} from '../actions';
+import '../style.css';
 
 
 
@@ -14,7 +15,7 @@ class Logout extends React.Component {
 
     render(){
         return (
-            <div>
+            <div className="logout">
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <button>Logout</button>
             </form>

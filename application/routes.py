@@ -49,9 +49,9 @@ def login():
             access_token = create_access_token(identity=username, expires_delta=timedelta(hours=3))
             return jsonify({'msg':'Login succeed','access_token':access_token,'username':username,'isLoggedIn':True})
         else:
-            return jsonify({'msg':'Login faild. Wrong Password'}), 401
+            return jsonify({'msg':'Login faild. Wrong Password'}), 422
     else:
-        return jsonify({'msg':'Login faild. Username not found'}), 401
+        return jsonify({'msg':'Login faild. Username not found'}), 422
 
 #Get the posts for a profile
 @app.route('/users/<string:username>',methods=['GET'])

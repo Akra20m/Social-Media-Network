@@ -2,17 +2,16 @@ import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {createPost} from '../actions';
+import '../style.css';
+
 
 
 
 class CreatePost extends React.Component {
 
-    renderInput({input,label,type}){
+    renderInput({input,type,placeholder}){
         return (
-            <div>
-                <label>{label}</label>
-                <input {...input} type={type} maxLength="150" required/>
-            </div>
+                <input className="input-post" {...input} type={type} placeholder={placeholder} maxLength="150" required/>
         );
     }
 
@@ -22,9 +21,9 @@ class CreatePost extends React.Component {
 
     render(){
         return (
-            <div>
+            <div className="input-post-container">
             <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <Field name="post" label="Post" type="text" component={this.renderInput}/>
+                <Field name="post"  type="text" placeholder="What are you thinking about?" component={this.renderInput}/>
                 <button>Post</button>
             </form>
             </div>
