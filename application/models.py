@@ -17,7 +17,7 @@ class Users(db.Model):
         self.email=email
         self.username=username
         self.password=password
-        self.role=1
+        self.role=0
 
 class Posts(db.Model):
     __tablename__='posts'
