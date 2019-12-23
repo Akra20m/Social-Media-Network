@@ -10,12 +10,14 @@ class Users(db.Model):
     email=db.Column(db.Text, unique=True)
     username=db.Column(db.Text, unique=True)
     password=db.Column(db.Text, unique=False)
+    role=db.Column(db.Boolean, unique=False)
 
     def __init__(self,name,email,username,password):
         self.name=name
         self.email=email
         self.username=username
         self.password=password
+        self.role=0
 
 class Posts(db.Model):
     __tablename__='posts'
@@ -32,7 +34,7 @@ class Posts(db.Model):
 
 class UserSchema(ma.Schema):
     class Meta:
-        fields= ('id', 'name', 'email', 'username', 'password')
+        fields= ('id', 'name', 'email', 'username', 'password', 'role')
 
 
 class PostSchema(ma.Schema):

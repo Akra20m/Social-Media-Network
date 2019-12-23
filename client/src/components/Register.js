@@ -35,7 +35,7 @@ class Register extends React.Component {
                 <Field name="email" label="Email" type="email" component={this.renderInput}/>
                 <Field name="username" label="Username" type="text" component={this.renderInput}/>
                 <Field name="password" label="Password" type="password" component={this.renderInput}/>
-                <button>Submit</button>
+                <button className="main_button">Submit</button>
             </form>
             {this.errormsg()}
             </div>

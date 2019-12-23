@@ -45,6 +45,12 @@ label,input {
     box-shadow: 1px 1px 12px 1px rgba(0, 0, 0, 0.7);
 }
 
+.main_button {
+    background-color: #051b64;
+    color: #ffffff;
+
+}
+
 .posts_container {  
   display: flex;
   flex-direction: column-reverse;

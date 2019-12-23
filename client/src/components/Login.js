@@ -40,7 +40,7 @@ class Login extends React.Component {
             <form className="test" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <Field name="username" label="Username" type="text" component={this.renderInput}/>
                 <Field name="password" label="Password" type="password" component={this.renderInput}/>
-                <button>Login</button>
+                <button className="main_button">Login</button>
             </form>
             {this.errormsg()}
             </div>

@@ -1,21 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
-import {fetchPosts, deletePost} from '../actions';
+import {fetchPosts, fetchSomePosts, deletePost} from '../actions';
 import '../style.css';
 
 
 class PostsLists extends React.Component {
     componentDidMount() {
-        if(this.props.user.isLoggedIn) this.props.fetchPosts(this.props.user.access_token);
+        if(this.props.user.isLoggedIn) this.props.fetchSomePosts(this.props.user.access_token,6);
     }
-    
+    more = () => {
+        this.props.fetchSomePosts(this.props.user.access_token,this.props.post.length+1);
+    }
+
     onClick = (id) => {
         this.props.deletePost(this.props.user.access_token,id);
         }
 
     renderDeleteEdit = (post) => {
-        if(post.username === this.props.user.username) {
+        if((post.username === this.props.user.username) || this.props.user.role) {
             return (
                 <div className="post-buttons-containter">
                 <Link to={`/posts/edit/${post.id}`}><button>Edit</button></Link>
@@ -36,12 +39,14 @@ class PostsLists extends React.Component {
         });
     }
 
-    render(){
+    render() {
 
         return (
             <div className="posts_container">
+                <button onClick={this.more}>More</button>
                 {this.renderPosts()}
             </div>
+
         );
     }
 }
@@ -50,4 +55,4 @@ const mapStateToProps = state => {
     return {user: state.user, post: Object.values(state.post)};
 };
 
-export default connect(mapStateToProps,{fetchPosts,deletePost})(PostsLists);
+export default connect(mapStateToProps,{fetchPosts,fetchSomePosts,deletePost})(PostsLists);
