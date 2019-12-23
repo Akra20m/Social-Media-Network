@@ -44,7 +44,6 @@ class Profile extends React.Component {
     }
     checkMore() {
         if(this.props.post.length > 7) return <button onClick={this.more}>More</button>;
-        console.log("checkmore")
     }
 
     render() {
