@@ -8,7 +8,7 @@ from flask_jwt_extended import JWTManager
 
 #app=Flask(__name__)
 app = Flask(__name__, static_folder='../client/build/static', template_folder="../client/build")
-#app.url_map.strict_slashes = False
+app.url_map.strict_slashes = False
 app.config.from_object(Config)
 CORS(app)
 db = SQLAlchemy(app)

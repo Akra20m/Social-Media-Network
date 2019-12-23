@@ -20,7 +20,7 @@ def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
 
-@app.route('/')
+@app.route('/',methods=['GET'])
 def serve():
     """serves React App"""
     return send_from_directory('../client/build', "index.html")
