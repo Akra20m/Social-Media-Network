@@ -6,7 +6,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 
 
-app=Flask(__name__)
+#app=Flask(__name__)
+app = Flask(__name__.split('.')[0], static_folder='../client/build/static', template_folder="../client/build")
 app.config.from_object(Config)
 CORS(app)
 db = SQLAlchemy(app)
