@@ -8,6 +8,8 @@ export default (state={status:200}, action) => {
             return {...state, ...action.payload}
         case 'LOGIN_ERROR':
             return {...state, ...action.payload}
+        case 'REGISTER_USER':
+            return {...state, ...action.payload}
         case 'REGISTER_ERROR':
             return {...state, ...action.payload}
         case 'AUTH_ERROR':

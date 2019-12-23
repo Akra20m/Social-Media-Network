@@ -10,7 +10,7 @@ class PostsLists extends React.Component {
         if(this.props.user.isLoggedIn) this.props.fetchSomePosts(this.props.user.access_token,6);
     }
     more = () => {
-        this.props.fetchSomePosts(this.props.user.access_token,this.props.post.length+1);
+        this.props.fetchSomePosts(this.props.user.access_token,this.props.post.length+3);
     }
 
     onClick = (id) => {
@@ -38,12 +38,15 @@ class PostsLists extends React.Component {
             );
         });
     }
+    checkMore() {
+        if(this.props.post.length > 7) return <button onClick={this.more}>More</button>;
+    }
 
     render() {
 
         return (
             <div className="posts_container">
-                <button onClick={this.more}>More</button>
+                {this.checkMore()}
                 {this.renderPosts()}
             </div>
 

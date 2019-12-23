@@ -106,3 +106,8 @@ label,input {
     flex: 1 1 100%;
     text-align: end;
 }
+
+span:hover {
+    color: blue;
+    cursor: pointer;
+}

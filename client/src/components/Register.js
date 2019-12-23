@@ -19,11 +19,15 @@ class Register extends React.Component {
         this.props.createUser(values);
     }
 
-    errormsg() {
+    msg() {
         if(this.props.user.status===409) {
             return(
                 <div><p>This email/username exists in our database</p></div>
          )}
+        else if(this.props.user.status===201){
+            return(
+                <div><p>User Added. Login</p></div>
+            )}
     }
 
     render(){
@@ -37,7 +41,7 @@ class Register extends React.Component {
                 <Field name="password" label="Password" type="password" component={this.renderInput}/>
                 <button className="main_button">Submit</button>
             </form>
-            {this.errormsg()}
+            {this.msg()}
             </div>
         );
     }

@@ -27,15 +27,6 @@ def catch_all(path):
     """serves React App"""
     return send_from_directory('../client/build', "index.html")
 
-
-# @app.route('/static/<path:path>')
-# def serve_static(path):
-#     return send_from_directory('../client/build/static/', path)
-
-# @app.route('/service-worker.js')
-# def serve_worker():
-#     return send_from_directory('../client/build/', 'service-worker.js')
-
 #User Registration
 @app.route('/users',methods=['POST'])
 def users():
@@ -70,17 +61,17 @@ def login():
         return jsonify({'msg':'Login faild. Username not found'}), 422
 
 #Get the posts for a profile
-@app.route('/users/<string:username>',methods=['GET'])
+@app.route('/users/<string:username>/<int:id>',methods=['GET'])
 @jwt_required
-def user(username:str):
-    user_posts = Posts.query.filter_by(username=username)
+def user(username:str,id:int):
+    user_posts = Posts.query.filter_by(username=username)[-id:]
     user = Users.query.filter_by(username=username).first()
     current_user = get_jwt_identity()
     if user:
         if username == current_user:
             result=posts_schema.dump(user_posts)
-            result_user=user_schema.dump(user)
-            return jsonify(result,result_user)
+            #result_user=user_schema.dump(user)
+            return jsonify(result)
         else:
             return jsonify({'msg':'Unauthorized'}), 401
 

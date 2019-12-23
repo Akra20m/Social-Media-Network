@@ -3,6 +3,7 @@ import flaskAPI from '../api/flaskapi';
 export const createUser = values => async dispatch => {
     try {
     const response = await flaskAPI.post('/users', values);
+    dispatch({type: 'REGISTER_USER', payload: {status:response.status}})
     } catch(err) {
         dispatch({type: 'REGISTER_ERROR', payload: {status:err.response.status}})
     }  
@@ -37,6 +38,22 @@ export const fetchSomePosts = (token,id) => async dispatch => {
         headers: {
         Authorization: `Bearer ${token}`}});
         id++;
+        dispatch({type: 'FETCH_POSTS', payload: response.data});
+    } catch(err) {
+        if(err.response.status === 401){
+            dispatch({type: 'AUTH_ERROR', payload: {isLoggedIn: false, access_token: ""}})
+        }
+      }
+}
+
+export const fetchUserPosts = (token,username,id) => async dispatch => {
+    try {
+        console.log(id,username);
+        const response = await flaskAPI.get(`/users/${username}/${id}`,{
+        headers: {
+        Authorization: `Bearer ${token}`}});
+        id++;
+        console.log(response.data);
         dispatch({type: 'FETCH_POSTS', payload: response.data});
     } catch(err) {
         if(err.response.status === 401){
