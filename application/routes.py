@@ -21,17 +21,11 @@ def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
 
-@app.route('/',methods=['GET'])
-def serve():
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def catch_all(path):
     """serves React App"""
     return send_from_directory('../client/build', "index.html")
-
-@app.route("/<path:path>")
-def static_proxy(path):
-    """static folder serve"""
-    file_name = path.split("/")[-1]
-    dir_name = os.path.join('../client/build', "/".join(path.split("/")[:-1]))
-    return send_from_directory(dir_name, file_name)
 
 
 # @app.route('/static/<path:path>')
