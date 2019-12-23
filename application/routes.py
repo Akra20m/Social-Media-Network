@@ -1,5 +1,5 @@
 from application import app, db, ma, jwt
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
@@ -19,6 +19,11 @@ post_schema = PostSchema()
 def check_if_token_in_blacklist(decrypted_token):
     jti = decrypted_token['jti']
     return jti in blacklist
+
+@app.route("/")
+def serve():
+    """serves React App"""
+    return send_from_directory(app.static_folder, "index.html")
 
 #User Registration
 @app.route('/users',methods=['POST'])
