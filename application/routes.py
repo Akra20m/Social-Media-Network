@@ -1,5 +1,5 @@
 from application import app, db, ma, jwt
-from flask import jsonify, request, send_from_directory,render_template
+from flask import jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
@@ -23,16 +23,15 @@ def check_if_token_in_blacklist(decrypted_token):
 @app.route('/',methods=['GET'])
 def serve():
     """serves React App"""
-    return render_template('index.html')
-    # return send_from_directory('../client/build', "index.html")
+    return send_from_directory('../client/build', "index.html")
 
-# @app.route('/static/<path:path>') # serve whatever the client requested in the static folder
-# def serve_static(path):
-#     return send_from_directory('../client/build/static/', path)
+@app.route('/static/<path:path>') # serve whatever the client requested in the static folder
+def serve_static(path):
+    return send_from_directory('../client/build/static/', path)
 
-# @app.route('/service-worker.js')
-# def serve_worker():
-#     return send_from_directory('../client/build/', 'service-worker.js')
+@app.route('/service-worker.js')
+def serve_worker():
+    return send_from_directory('../client/build/', 'service-worker.js')
 
 #User Registration
 @app.route('/users',methods=['POST'])
