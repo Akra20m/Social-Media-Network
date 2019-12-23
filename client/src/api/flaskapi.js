@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const flaskAPI = axios.create({
-    baseURL:'http://localhost:5000',
+    baseURL:'https://social-network-akram.herokuapp.com',
 });
 
 export default flaskAPI;
