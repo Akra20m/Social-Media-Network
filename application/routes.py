@@ -23,7 +23,7 @@ def check_if_token_in_blacklist(decrypted_token):
 @app.route("/")
 def serve():
     """serves React App"""
-    return send_from_directory(app.static_folder, "index.html")
+    return send_from_directory(app.template_folder, "index.html")
 
 #User Registration
 @app.route('/users',methods=['POST'])
