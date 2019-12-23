@@ -23,7 +23,15 @@ def check_if_token_in_blacklist(decrypted_token):
 @app.route('/')
 def serve():
     """serves React App"""
-    return send_from_directory("../client/build", "index.html")
+    return send_from_directory('../client/build', "index.html")
+
+@app.route('/static/<path:path>') # serve whatever the client requested in the static folder
+def serve_static(path):
+    return send_from_directory('../client/build/static/', path)
+
+@app.route('/service-worker.js')
+def serve_worker():
+    return send_from_directory('../client/build/', 'service-worker.js')
 
 #User Registration
 @app.route('/users',methods=['POST'])
