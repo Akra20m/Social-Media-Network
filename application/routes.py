@@ -6,6 +6,7 @@ from passlib.hash import sha256_crypt
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
 from datetime import datetime, timedelta
 from .models import Posts, Users, UserSchema, PostSchema
+import os
 
 blacklist = set()
 
@@ -25,13 +26,21 @@ def serve():
     """serves React App"""
     return send_from_directory('../client/build', "index.html")
 
-@app.route('/static/<path:path>') # serve whatever the client requested in the static folder
-def serve_static(path):
-    return send_from_directory('../client/build/static/', path)
+@app.route("/<path:path>")
+def static_proxy(path):
+    """static folder serve"""
+    file_name = path.split("/")[-1]
+    dir_name = os.path.join('../client/build', "/".join(path.split("/")[:-1]))
+    return send_from_directory(dir_name, file_name)
 
-@app.route('/service-worker.js')
-def serve_worker():
-    return send_from_directory('../client/build/', 'service-worker.js')
+
+# @app.route('/static/<path:path>')
+# def serve_static(path):
+#     return send_from_directory('../client/build/static/', path)
+
+# @app.route('/service-worker.js')
+# def serve_worker():
+#     return send_from_directory('../client/build/', 'service-worker.js')
 
 #User Registration
 @app.route('/users',methods=['POST'])
