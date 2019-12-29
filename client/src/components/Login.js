@@ -36,7 +36,7 @@ class Login extends React.Component {
        
         return (
             <div className="test">
-            <h3>Login</h3>
+            <h2>Login</h2>
             <form className="test" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <Field name="username" label="Username" type="text" component={this.renderInput}/>
                 <Field name="password" label="Password" type="password" component={this.renderInput}/>

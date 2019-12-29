@@ -7,13 +7,15 @@ import '../style.css';
 
 class PostsLists extends React.Component {
     componentDidMount() {
-        if(this.props.user.isLoggedIn) this.props.fetchSomePosts(this.props.user.access_token,6);
+        console.log("Mount")
+
+        if(this.props.user.isLoggedIn) this.props.fetchSomePosts(this.props.user.access_token,8);
     }
     more = () => {
         this.props.fetchSomePosts(this.props.user.access_token,this.props.post.length+3);
     }
 
-    onClick = (id) => {
+    deleteOnClick = (id) => {
         this.props.deletePost(this.props.user.access_token,id);
         }
 
@@ -22,7 +24,7 @@ class PostsLists extends React.Component {
             return (
                 <div className="post-buttons-containter">
                 <Link to={`/posts/edit/${post.id}`}><button>Edit</button></Link>
-                <button onClick={this.onClick.bind(this,post.id)}>Delete</button>
+                <button onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button>
                 </div>
             )};
     } 
@@ -39,11 +41,11 @@ class PostsLists extends React.Component {
         });
     }
     checkMore() {
+        console.log(this.props.post.length);
         if(this.props.post.length > 7) return <button onClick={this.more}>More</button>;
     }
 
     render() {
-
         return (
             <div className="posts_container">
                 {this.checkMore()}

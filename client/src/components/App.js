@@ -13,7 +13,7 @@ class App extends React.Component {
         return (
         <div className="cover_page">
             <BrowserRouter>
-                <div className="cover_page">
+                <div className="cover_page" style={{backgroundColor:'#f0f2f5'}}>
                     <Route path="/" exact component={Main}/>
                     <Route path="/dashboard" exact component={Dashboard}/>
                     <Route path="/posts/edit/:id" exact component={PostEdit}/>

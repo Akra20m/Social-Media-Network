@@ -1,15 +1,14 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link,Redirect} from 'react-router-dom';
-import {fetchSomePosts, deletePost,fetchUserPosts} from '../actions';
-import Logout from './Logout';
+import {deletePost,fetchUserPosts} from '../actions';
+import Header from './Header';
 import '../style.css';
 
 
 class Profile extends React.Component {
-
     componentDidMount() {
-        if(this.props.user.isLoggedIn) this.props.fetchUserPosts(this.props.user.access_token,this.props.user.username,7);
+        if(this.props.user.isLoggedIn) this.props.fetchUserPosts(this.props.user.access_token,this.props.user.username,8);
     }
     more = () => {
         this.props.fetchUserPosts(this.props.user.access_token,this.props.user.username,this.props.post.length+3);
@@ -31,7 +30,6 @@ class Profile extends React.Component {
 
     renderPosts() {
         return this.props.post.map(post => {
-            if(post.username === this.props.user.username) {
                 return (
                     <div className="post" key={post.id}>
                         <div className="post-text-container">{post.post}</div>
@@ -39,10 +37,10 @@ class Profile extends React.Component {
                         {this.renderDeleteEdit(post)}
                     </div>
                 );
-            }
         });
     }
     checkMore() {
+        
         if(this.props.post.length > 7) return <button onClick={this.more}>More</button>;
     }
 
@@ -52,11 +50,10 @@ class Profile extends React.Component {
         }
         return (
             <div className="test1">
-            <Logout/>
+            <Header/>
             <div className="posts_container">
-                {this.checkMore()}
+                {this.checkMore()}      
                 {this.renderPosts()}
-                {console.log(this.renderPosts())}
             </div>
             </div>
         );
@@ -64,7 +61,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {user: state.user, post: Object.values(state.post)};
+    return {user: state.user, post: Object.values(state.userPost)};
 };
 
-export default connect(mapStateToProps,{fetchUserPosts,fetchSomePosts,deletePost})(Profile);
+export default connect(mapStateToProps,{fetchUserPosts,deletePost})(Profile);

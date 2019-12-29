@@ -11,7 +11,6 @@ class CreatePost extends React.Component {
 
     renderInput({input,type,placeholder}){
         return (
-               // <input className="input-post" {...input} type={type} placeholder={placeholder} maxLength="150" required/>
                <textarea className="input-post" {...input} maxLength="150" placeholder={placeholder} rows="3" required></textarea>
         );
     }
@@ -25,7 +24,7 @@ class CreatePost extends React.Component {
             <div className="input-post-container">
             <form className="test" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <Field name="post"  type="text" placeholder="What are you thinking about?" component={this.renderInput}/>
-                <button>Post</button>
+                <button className="post-button">Post</button>
             </form>
             </div>
         );

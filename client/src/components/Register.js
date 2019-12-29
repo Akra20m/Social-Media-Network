@@ -33,7 +33,7 @@ class Register extends React.Component {
     render(){
         return (
             <div className="test">
-            <h3>Sign Up</h3>
+            <h2>Sign Up</h2>
             <form className="test" onSubmit={this.props.handleSubmit(this.onSubmit)}>
                 <Field name="name" label="Name" type="text" component={this.renderInput}/>
                 <Field name="email" label="Email" type="email" component={this.renderInput}/>

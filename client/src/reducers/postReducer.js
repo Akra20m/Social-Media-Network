@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {fetchPosts,createPost,deletePost,editPost} from '../actions';
+import {fetchPosts,fetchSomePosts,createPost,deletePost,editPost} from '../actions';
 
 
 export default (state={}, action) => {
