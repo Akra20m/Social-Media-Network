@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {Redirect,Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
@@ -7,44 +8,50 @@ import {editPost} from '../actions';
 
 class PostEdit extends React.Component {
 
-
-    renderInput({input,type}){
+    renderInput({input}){
         return (
             <div>
-                <input {...input} type={type} maxLength="150" required/>
+                {/*<input {...input} type={type} maxLength="150" required/>*/}
+                <textarea className="input-post" {...input} maxLength="150" placeholder={"Edit post"} rows="3" required></textarea>
+
             </div>
         );
     }
 
     onSubmit = (values) => {
-        this.props.editPost(values,this.props.user.access_token,this.props.post.id)
+        this.props.editPost(values,this.props.user.access_token,this.props.post.id,this.props.type);
     }
-
 
     render(){
         if(!this.props.user.isLoggedIn || !(this.props.post.username === this.props.user.username)){
             return <Redirect to='/'/>
         }
-        return (
-        <div>
-            {this.props.post.post}
-            <div>
-            <form onSubmit={this.props.handleSubmit(this.onSubmit)}>
-                <Field name="post" type="text" component={this.renderInput}/>
-                <button>Edit</button>
+        return ReactDOM.createPortal(
+        <div className="ui dimmer modals visible active" style={{position:"fixed"}}>
+            <div className="ui standard modal visible active">
+            <div className="header">
+                {this.props.post.post}
+            </div>
+            <div className="content">
+            <form onSubmit={this.props.handleSubmit(this.onSubmit)} id="editForm">
+                <Field name="post" component={this.renderInput}/>
             </form>
             </div>
-            <Link to={`/dashboard`}>Dashboard</Link>
-        </div>
-        
+            <div className="actions">
+                <button form="editForm">Edit</button>
+                <button onClick={this.props.editClose}>close</button>
+            </div>
+            </div>
+        </div>,
+        document.querySelector('#modal')
         );
     }
 }
 
 const mapStateToProps = (state,ownProps) => {
-    return {user: state.user, post: state.post[ownProps.match.params.id]};
+   if(ownProps.type===1) return {user: state.user, post: state.post[ownProps.id]};
+   else if(ownProps.type===2) return {user: state.user, post: state.userPost[ownProps.id]};
 };
-
 
 export default connect(mapStateToProps,{editPost})(reduxForm({
     form: 'editedForm'

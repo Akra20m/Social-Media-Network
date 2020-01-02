@@ -38,6 +38,7 @@ export const fetchSomePosts = (token,id) => async dispatch => {
         const response = await flaskAPI.get(`/posts/${id}`,{
         headers: {
         Authorization: `Bearer ${token}`}});
+        console.log(response.data);
         dispatch({type: 'FETCH_POSTS', payload: response.data});
     } catch(err) {
         if(err.response.status === 401){
@@ -88,12 +89,14 @@ export const deletePost = (token,id) => async dispatch => {
         } catch(err){console.log(err.response)}
 };
 
-export const editPost = (values,token,id) => async dispatch => {
+export const editPost = (values,token,id,type) => async dispatch => {
     try {
         const response = await flaskAPI.put(`/posts/${id}`,values, {
             headers: {
             Authorization: `Bearer ${token}`
         }})
-        dispatch({type: 'EDIT_POST', payload: response.data});
+        console.log(response.data);
+        if(type===1) dispatch({type: 'EDIT_POST', payload: response.data});
+        else if(type===2)dispatch({type: 'EDIT_USER_POST', payload: response.data});
         } catch(err) {console.log(err.response)};
 };

@@ -11,7 +11,7 @@ export default (state={}, action) => {
         case 'DELETE_POST':
             return _.omit(state,action.payload);    
         case 'EDIT_POST':
-            return {...state,..._.mapKeys(action.payload, 'id')};
+            return {...state,..._.mapKeys([action.payload], 'id')};
         default:
             return state;
     }

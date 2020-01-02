@@ -15,10 +15,12 @@ class Dashboard extends React.Component {
             return <Redirect to='/' />
         }
         return (
+            <div className="cover_page" style={{backgroundColor:'#f0f2f5'}}>
             <div className="test1">
             <Header/>
             <CreatePost/>
             <PostsLists/>
+            </div>
             </div>
         );
     }

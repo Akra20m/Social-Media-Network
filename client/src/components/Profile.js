@@ -2,11 +2,17 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link,Redirect} from 'react-router-dom';
 import {deletePost,fetchUserPosts} from '../actions';
+import PostEdit from './PostEdit';
 import Header from './Header';
 import '../style.css';
 
 
 class Profile extends React.Component {
+    state = {
+        id: null,
+        show: false
+    };
+
     componentDidMount() {
         if(this.props.user.isLoggedIn) this.props.fetchUserPosts(this.props.user.access_token,this.props.user.username,8);
     }
@@ -14,16 +20,22 @@ class Profile extends React.Component {
         this.props.fetchUserPosts(this.props.user.access_token,this.props.user.username,this.props.post.length+3);
     }
 
-    onClick = (id) => {
+    deleteOnClick = (id) => {
         this.props.deletePost(this.props.user.access_token,id);
         }
+    editOpen = (id) => {
+        this.setState({id:id, show:true});
+    }
+    editClose = () => {
+        this.setState({show:false});
+    }
 
     renderDeleteEdit = (post) => {
         if((post.username === this.props.user.username) || this.props.user.role) {
             return (
                 <div className="post-buttons-containter">
-                <Link to={`/posts/edit/${post.id}`}><button>Edit</button></Link>
-                <button onClick={this.onClick.bind(this,post.id)}>Delete</button>
+                <button onClick={this.editOpen.bind(this,post.id)}>Edit</button>
+                <button onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button>
                 </div>
             )};
     } 
@@ -40,8 +52,12 @@ class Profile extends React.Component {
         });
     }
     checkMore() {
-        
         if(this.props.post.length > 7) return <button onClick={this.more}>More</button>;
+    }
+    renderEdit() {
+        if(this.state.show){
+           return <PostEdit id={this.state.id} show={this.state.show} editClose={this.editClose} type={2}/>
+        }
     }
 
     render() {
@@ -49,11 +65,14 @@ class Profile extends React.Component {
             return <Redirect to='/' />
         }
         return (
+            <div className="cover_page" style={{backgroundColor:'#f0f2f5'}}>
             <div className="test1">
             <Header/>
             <div className="posts_container">
                 {this.checkMore()}      
                 {this.renderPosts()}
+                {this.renderEdit()}
+            </div>
             </div>
             </div>
         );

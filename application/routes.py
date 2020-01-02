@@ -1,6 +1,7 @@
 from application import app, db, ma, jwt
 from flask import jsonify, request, send_from_directory
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import func
 from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
@@ -122,7 +123,8 @@ def delete_put_post(id:int):
     current_user = get_jwt_identity()
     user = Users.query.filter_by(username=current_user).first()
     if request.method=='GET':
-        posts_list = Posts.query.all()[-id:]
+        posts_list= Posts.query.all()[-id:]
+        #posts_count=db.session.query(db.func.count(Posts.post)).scalar()
         result=posts_schema.dump(posts_list)
         return jsonify(result)
 
@@ -143,10 +145,11 @@ def delete_put_post(id:int):
         if post:
             if post.username == current_user:
                 post.post=request.json.get('post')
-                post.date=datetime.now()
+                #post.date=datetime.now()
                 db.session.commit()
-                posts_list = Posts.query.all()
-                result=posts_schema.dump(posts_list)
+                post = Posts.query.filter_by(id=id).first()
+                #posts_list = Posts.query.all()
+                result=post_schema.dump(post)
                 return jsonify(result), 202
             else:
                 return jsonify({'msg':'Unauthorized'}), 401
