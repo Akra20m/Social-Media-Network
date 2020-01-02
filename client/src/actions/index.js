@@ -34,12 +34,13 @@ export const fetchPosts = (token) => async dispatch => {
 
 export const fetchSomePosts = (token,id) => async dispatch => {
     try {
-        console.log(id);
         const response = await flaskAPI.get(`/posts/${id}`,{
         headers: {
         Authorization: `Bearer ${token}`}});
         console.log(response.data);
-        dispatch({type: 'FETCH_POSTS', payload: response.data});
+        dispatch({type: 'FETCH_POSTS', payload: response.data[0]});
+        dispatch({type: 'NO_MORE', payload: response.data[1]});
+
     } catch(err) {
         if(err.response.status === 401){
             dispatch({type: 'AUTH_ERROR', payload: {isLoggedIn: false, access_token: ""}})
@@ -52,7 +53,9 @@ export const fetchUserPosts = (token,username,id) => async dispatch => {
         const response = await flaskAPI.get(`/users/${username}/${id}`,{
         headers: {
         Authorization: `Bearer ${token}`}});
-        dispatch({type: 'FETCH_USER_POSTS', payload: response.data});
+        dispatch({type: 'FETCH_USER_POSTS', payload: response.data[0]});
+        dispatch({type: 'NO_MORE', payload: response.data[1]});
+
     } catch(err) {
         if(err.response.status === 401){
             dispatch({type: 'AUTH_ERROR', payload: {isLoggedIn: false, access_token: ""}})

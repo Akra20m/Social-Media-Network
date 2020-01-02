@@ -51,7 +51,7 @@ class PostsLists extends React.Component {
         });
     }
     checkMore() {
-        return <button onClick={this.more}>More</button>;
+        if(!this.props.user.noMoreAll) return <button onClick={this.more}>More</button>;
     }
     renderEdit() {
         if(this.state.show){
@@ -60,7 +60,6 @@ class PostsLists extends React.Component {
     }
 
     render() {
-        console.log("Render works");
         if(this.props.post.length){
             return (
                 <div className="posts_container">

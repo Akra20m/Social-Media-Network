@@ -1,4 +1,4 @@
-import {loginUser,logoutUser,fetchPosts} from '../actions';
+import {loginUser,logoutUser,fetchPosts,fetchSomePosts} from '../actions';
 
 export default (state={status:200}, action) => {
     switch(action.type) {
@@ -13,6 +13,8 @@ export default (state={status:200}, action) => {
         case 'REGISTER_ERROR':
             return {...state, ...action.payload}
         case 'AUTH_ERROR':
+            return {...state, ...action.payload}
+        case 'NO_MORE':
             return {...state, ...action.payload}
         default:
             return state;

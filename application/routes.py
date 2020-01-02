@@ -67,12 +67,20 @@ def login():
 def user(username:str,id:int):
     user_posts = Posts.query.filter_by(username=username)[-id:]
     user = Users.query.filter_by(username=username).first()
+    posts_count=db.session.query(db.func.count(Posts.post)).filter_by(username=username).scalar()
+    print(posts_count)
+    print(user_posts)
+    if posts_count<=id:
+        noMore=True
+        id=posts_count
+    else:
+        noMore=False
     current_user = get_jwt_identity()
     if user:
         if username == current_user:
             result=posts_schema.dump(user_posts)
             #result_user=user_schema.dump(user)
-            return jsonify(result)
+            return jsonify(result,{'noMoreUser':noMore})
         else:
             return jsonify({'msg':'Unauthorized'}), 401
 
@@ -122,11 +130,17 @@ def posts():
 def delete_put_post(id:int):
     current_user = get_jwt_identity()
     user = Users.query.filter_by(username=current_user).first()
+    print(id)
     if request.method=='GET':
+        posts_count=db.session.query(db.func.count(Posts.post)).scalar()
+        if posts_count<=id:
+            noMore=True
+            id=posts_count
+        else:
+            noMore=False
         posts_list= Posts.query.all()[-id:]
-        #posts_count=db.session.query(db.func.count(Posts.post)).scalar()
         result=posts_schema.dump(posts_list)
-        return jsonify(result)
+        return jsonify(result,{'noMoreAll':noMore})
 
     elif request.method=='DELETE':
         post = Posts.query.filter_by(id=id).first()
