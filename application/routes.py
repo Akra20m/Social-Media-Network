@@ -68,8 +68,6 @@ def user(username:str,id:int):
     user_posts = Posts.query.filter_by(username=username)[-id:]
     user = Users.query.filter_by(username=username).first()
     posts_count=db.session.query(db.func.count(Posts.post)).filter_by(username=username).scalar()
-    print(posts_count)
-    print(user_posts)
     if posts_count<=id:
         noMore=True
         id=posts_count
@@ -130,7 +128,6 @@ def posts():
 def delete_put_post(id:int):
     current_user = get_jwt_identity()
     user = Users.query.filter_by(username=current_user).first()
-    print(id)
     if request.method=='GET':
         posts_count=db.session.query(db.func.count(Posts.post)).scalar()
         if posts_count<=id:

@@ -9,7 +9,7 @@ import '../style.css';
 class PostsLists extends React.Component {
     state = {
         id: null,
-        show: false
+        show: false,
     };
     componentDidMount() {
         if(this.props.user.isLoggedIn) this.props.fetchSomePosts(this.props.user.access_token,8);
@@ -45,6 +45,7 @@ class PostsLists extends React.Component {
                 <div className="post" key={post.id}>
                     <div className="post-text-container">{post.post}</div>
                     <div className="post-username-container">{post.username}</div>
+                    <div className="post-date-container">{post.date.substr(0,10)}</div>
                     {this.renderDeleteEdit(post)}
                 </div>
             );

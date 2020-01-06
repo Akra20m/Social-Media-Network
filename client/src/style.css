@@ -119,19 +119,24 @@ label,input {
 }
 
 .post-buttons-containter {
-    flex-basis: 50%;
-    justify-self: self-end;
-    text-align: end;
+    margin-left: auto;
 }
 
 .post-username-container {
-    flex-basis: 50%;
     font-weight: bold;
     text-transform: capitalize;
     color: blue;
     min-height: 33px;
     box-sizing: border-box;
-    padding-top:8px ;
+    padding-top:8px;
+}
+
+.post-date-container {
+    padding-top:8px;
+    font-style: italic;
+    margin-left: 5px;
+    color: #616770;
+    font-size: 12px;
 }
 
 .input-post {
