@@ -37,7 +37,6 @@ export const fetchSomePosts = (token,id) => async dispatch => {
         const response = await flaskAPI.get(`/posts/${id}`,{
         headers: {
         Authorization: `Bearer ${token}`}});
-        console.log(response.data);
         dispatch({type: 'FETCH_POSTS', payload: response.data[0]});
         dispatch({type: 'NO_MORE', payload: response.data[1]});
 
@@ -98,7 +97,6 @@ export const editPost = (values,token,id,type) => async dispatch => {
             headers: {
             Authorization: `Bearer ${token}`
         }})
-        console.log(response.data);
         if(type===1) dispatch({type: 'EDIT_POST', payload: response.data});
         else if(type===2)dispatch({type: 'EDIT_USER_POST', payload: response.data});
         } catch(err) {console.log(err.response)};
