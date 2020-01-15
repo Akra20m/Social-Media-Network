@@ -6,17 +6,18 @@ import '../style.css';
 
 
 
-
 class CreatePost extends React.Component {
 
-    renderInput({input,type,placeholder}){
+    renderInput({input,placeholder}){
         return (
                <textarea className="input-post" {...input} maxLength="150" placeholder={placeholder} rows="3" required></textarea>
         );
     }
 
     onSubmit = (values) => {
-        this.props.createPost(values,this.props.user.access_token)
+        this.props.createPost(values,this.props.user.access_token);
+        console.log(this.props);
+        this.props.change("post",null);
     }
 
     render(){
