@@ -109,7 +109,6 @@ export const createComment = (id,values,token) => async dispatch => {
             headers: {
             Authorization: `Bearer ${token}`}});
             let obj={[id]:response.data}
-            console.log(obj);
             dispatch({type: 'CREATE_COMMENT', payload: obj});
     } catch(err){ console.log(err.response)};
 }
@@ -120,7 +119,6 @@ export const fetchComments = (id,token) => async dispatch => {
             headers: {
             Authorization: `Bearer ${token}`}});
             let obj={[id]:response.data}
-            console.log(obj);
             dispatch({type: 'FETCH_COMMENTS', payload: obj});
     } catch(err){ console.log(err.response)};
 }
