@@ -16,7 +16,6 @@ class CreatePost extends React.Component {
 
     onSubmit = (values) => {
         this.props.createPost(values,this.props.user.access_token);
-        console.log(this.props);
         this.props.change("post",null);
     }
 

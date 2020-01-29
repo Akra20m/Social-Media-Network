@@ -31,6 +31,19 @@ class Posts(db.Model):
         self.username=username
         self.date=date
 
+class Comments(db.Model):
+    __tablename__='comments'
+    id=db.Column(db.Integer, primary_key=True)
+    postid=db.Column(db.Integer, unique=False)
+    comment=db.Column(db.String(150), unique=False)
+    username=db.Column(db.Text, unique=False)
+    date=db.Column(db.DateTime, unique=False)
+
+    def __init__(self,postid,comment,username,date):
+        self.postid=postid
+        self.comment=comment
+        self.username=username
+        self.date=date
 
 class UserSchema(ma.Schema):
     class Meta:
@@ -41,3 +54,6 @@ class PostSchema(ma.Schema):
     class Meta:
         fields= ('id', 'post', 'username', 'date')
 
+class CommentSchema(ma.Schema):
+    class Meta:
+        fields= ('id', 'postid', 'comment', 'username', 'date')

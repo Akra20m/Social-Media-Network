@@ -6,7 +6,7 @@ from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
 from datetime import datetime, timedelta
-from .models import Posts, Users, UserSchema, PostSchema
+from .models import Posts, Users, Comments, UserSchema, PostSchema, CommentSchema
 import os
 
 blacklist = set()
@@ -15,6 +15,8 @@ users_schema = UserSchema(many=True)
 user_schema = UserSchema()
 posts_schema = PostSchema(many=True)
 post_schema = PostSchema()
+comments_schema = CommentSchema(many=True)
+comment_schema = CommentSchema()
 
 
 @jwt.token_in_blacklist_loader
@@ -61,7 +63,7 @@ def login():
     else:
         return jsonify({'msg':'Login faild. Username not found'}), 422
 
-#Get the posts for a profile
+#Fetch the posts for a profile
 @app.route('/users/<string:username>/<int:id>',methods=['GET'])
 @jwt_required
 def user(username:str,id:int):
@@ -103,26 +105,26 @@ def delete_user(username:str):
         return jsonify({'msg':'This user does not exist in our database'}), 404
 
 
-#List all the posts / Submit a new post
-@app.route("/posts",methods=['GET','POST'])
+#Fetch comments of a post / Submit a new post
+@app.route("/comments/<int:id>",methods=['GET','POST'])
 @jwt_required
-def posts():
+def comments(id:int):
     if request.method == 'GET':
-        posts_list = Posts.query.all()
-        result=posts_schema.dump(posts_list)
+        comments_list = Comments.query.filter_by(postid=id)
+        result=comments_schema.dump(comments_list)
         return jsonify(result)
     elif request.method == 'POST':
-        post=request.json.get('post')
+        comment=request.json.get('comment')
         username = get_jwt_identity()
-        date=datetime.now()
-        post_object=Posts(post,username,date)
-        db.session.add(post_object)
+        date=datetime.now() 
+        comment_object=Comments(id,comment,username,date)
+        db.session.add(comment_object)
         db.session.commit()
-        posts_list = Posts.query.all()
-        result=posts_schema.dump(posts_list)
+        comments_list = Comments.query.filter_by(postid=id)
+        result=comments_schema.dump(comments_list)
         return jsonify(result), 201
 
-#Delete Edit a post and fetch certain posts
+#Delete/Edit a post and fetch certain posts
 @app.route('/posts/<int:id>',methods=['DELETE','PUT','GET'])
 @jwt_required
 def delete_put_post(id:int):
@@ -143,7 +145,9 @@ def delete_put_post(id:int):
         post = Posts.query.filter_by(id=id).first()
         if post:
             if ((post.username == current_user) or user.role):
+                comments = Comments.query.filter(Comments.postid==id).delete()
                 db.session.delete(post)
+                db.session.commit()
                 db.session.commit()
                 return jsonify({'msg':'Post Deleted'}), 202
             else:
@@ -167,7 +171,25 @@ def delete_put_post(id:int):
         else:
             return jsonify({'msg':'This post does not exist in our database'}), 404
 
-                   
+
+@app.route("/posts",methods=['GET','POST'])
+@jwt_required
+def posts():
+    if request.method == 'GET':
+        posts_list = Posts.query.all()
+        result=posts_schema.dump(posts_list)
+        return jsonify(result)
+    elif request.method == 'POST':
+        post=request.json.get('post')
+        username = get_jwt_identity()
+        date=datetime.now()
+        post_object=Posts(post,username,date)
+        db.session.add(post_object)
+        db.session.commit()
+        posts_list = Posts.query.all()
+        result=posts_schema.dump(posts_list)
+        return jsonify(result), 201
+            
 
 # Revoke user access token
 @app.route('/logout', methods=['DELETE'])

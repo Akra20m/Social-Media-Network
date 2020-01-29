@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
 import PostEdit from './PostEdit';
+import Comment from './Comment';
 import {fetchPosts, fetchSomePosts, deletePost} from '../actions';
 import '../style.css';
 
@@ -27,12 +28,15 @@ class PostsLists extends React.Component {
     editClose = () => {
         this.setState({show:false});
     }
-
+    displayComment = (id) => {
+        return(
+            <Comment id ={id}/>
+        );
+    }
     renderDeleteEdit = (post) => {
         if((post.username === this.props.user.username) || this.props.user.role) {
             return (
                 <div className="post-buttons-containter">
-                {/*<Link to={`/posts/edit/${post.id}`}><button>Edit</button></Link>*/}
                 <button onClick={this.editOpen.bind(this,post.id)}>Edit</button>
                 <button onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button>
                 </div>
@@ -47,6 +51,7 @@ class PostsLists extends React.Component {
                     <div className="post-username-container">{post.username}</div>
                     <div className="post-date-container">{post.date.substr(0,10)}</div>
                     {this.renderDeleteEdit(post)}
+                    {this.displayComment(post.id)}
                 </div>
             );
         });

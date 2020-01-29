@@ -101,3 +101,26 @@ export const editPost = (values,token,id,type) => async dispatch => {
         else if(type===2)dispatch({type: 'EDIT_USER_POST', payload: response.data});
         } catch(err) {console.log(err.response)};
 };
+
+export const createComment = (id,values,token) => async dispatch => {
+
+    try{
+        const response = await flaskAPI.post(`/comments/${id}`,values, {
+            headers: {
+            Authorization: `Bearer ${token}`}});
+            let obj={[id]:response.data}
+            console.log(obj);
+            dispatch({type: 'CREATE_COMMENT', payload: obj});
+    } catch(err){ console.log(err.response)};
+}
+
+export const fetchComments = (id,token) => async dispatch => {
+    try{
+        const response = await flaskAPI.get(`/comments/${id}`, {
+            headers: {
+            Authorization: `Bearer ${token}`}});
+            let obj={[id]:response.data}
+            console.log(obj);
+            dispatch({type: 'FETCH_COMMENTS', payload: obj});
+    } catch(err){ console.log(err.response)};
+}
