@@ -8,7 +8,6 @@ import '../style.css';
 
 
 class App extends React.Component {
-
     render(){
         return (
         <div className="cover_page">

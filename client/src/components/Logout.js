@@ -11,6 +11,7 @@ class Logout extends React.Component {
 
     onSubmit = () => {
         this.props.logoutUser(this.props.user.access_token)
+        window.localStorage.clear();
     }
 
     render(){

@@ -7,7 +7,7 @@ import reduxThunk from 'redux-thunk';
 import App from './components/App';
 import reducers from './reducers';
 
-const presistedState = loadFromLocalStorage();
+const presistedState = loadFromSessionStorage();
 
 const store=createStore(reducers,presistedState,applyMiddleware(reduxThunk));
 
@@ -18,15 +18,20 @@ ReactDom.render(
   document.querySelector('#root')
 );
 
-function saveToLocalStorage(state) {
+function saveToSessionStorage(state) {
   const serializedState = JSON.stringify(state);
-  localStorage.setItem('state', serializedState);
+  sessionStorage.setItem('state', serializedState);
 }
 
-function loadFromLocalStorage(){
-  const serializedState = localStorage.getItem('state');
+function loadFromSessionStorage(){
+  const serializedState = sessionStorage.getItem('state');
   if(serializedState===null) return undefined;
   return JSON.parse(serializedState)
 }
 
-store.subscribe(() => saveToLocalStorage(store.getState()));
+store.subscribe(() => saveToSessionStorage(store.getState()));
+
+
+
+
+

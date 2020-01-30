@@ -9,7 +9,7 @@ import '../style.css';
 
 
 class Dashboard extends React.Component {
-   
+
     render(){
         if(!this.props.user.isLoggedIn) {
             return <Redirect to='/' />

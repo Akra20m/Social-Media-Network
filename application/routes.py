@@ -36,7 +36,7 @@ def users():
     email=request.json.get('email')
     name=request.json.get('name')
     password=sha256_crypt.encrypt(str(request.json.get('password')))
-    username=request.json.get('username')
+    username=request.json.get('username').lower()
     user_email=Users.query.filter_by(email=email).first()
     user_username=Users.query.filter_by(username=username).first()
 
@@ -51,7 +51,8 @@ def users():
 #User login
 @app.route('/login', methods=['POST'])
 def login():
-    username=request.json.get("username")
+    username=request.json.get("username").lower()
+    print(username,type(username))
     password=request.json.get("password")
     usernamecandidate=Users.query.filter_by(username=username).first()
     if usernamecandidate != None:
