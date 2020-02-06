@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {Redirect,Link} from 'react-router-dom';
 import {Field, reduxForm} from 'redux-form';
 import {editPost} from '../actions';
+import '../style.css';
 
 
 class PostEdit extends React.Component {
@@ -38,8 +39,11 @@ class PostEdit extends React.Component {
             </form>
             </div>
             <div className="actions">
-                <button form="editForm">Edit</button>
-                <button onClick={this.props.editClose}>close</button>
+                <div className="ui buttons">
+                <button className="ui positive button" form="editForm">Edit</button>
+                <div className="or"></div>
+                <button className="ui button" onClick={this.props.editClose}>close</button>
+                </div>
             </div>
             </div>
         </div>,

@@ -7,8 +7,9 @@ import Logout from './Logout';
 const Header = (props) => {
     return (
         <div className="header">
-        <Link className="profile" to="/dashboard">home</Link>
-        <Link className="profile" to="/profile">{props.user.username}</Link>
+        {/* <img src={"https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_1.jpg"} alt="image" className="ui avatar image"/> */}
+        <Link className="nav-item" to="/profile">{props.user.username}</Link>
+        <Link className="nav-item" to="/dashboard">home</Link>
         <Logout/>
         </div>
     );

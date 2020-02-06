@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link} from 'react-router-dom';
+import ReactEmoji from 'react-emoji';
 import PostEdit from './PostEdit';
 import Comment from './Comment';
 import {fetchPosts, fetchSomePosts, deletePost} from '../actions';
@@ -37,8 +38,11 @@ class PostsLists extends React.Component {
         if((post.username === this.props.user.username) || this.props.user.role) {
             return (
                 <div className="post-buttons-containter">
-                <button onClick={this.editOpen.bind(this,post.id)}>Edit</button>
-                <button onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button>
+                <i className="edit icon large button-edit" onClick={this.editOpen.bind(this,post.id)} Aria-label="click to edit post"></i>
+                <i className="trash icon large button-delete" onClick={this.deleteOnClick.bind(this,post.id)} Aria-label="click to delete post"></i>
+
+                {/* <button className="button-edit" onClick={this.editOpen.bind(this,post.id)}>Edit</button> */}
+                {/* <button className="button-delete" onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button> */}
                 </div>
             )};
     } 
@@ -47,7 +51,8 @@ class PostsLists extends React.Component {
         return this.props.post.map(post => {
             return (
                 <div className="post" key={post.id}>
-                    <div className="post-text-container">{post.post}</div>
+                    <div className="post-text-container">{ReactEmoji.emojify(post.post)}</div>
+                    {/* <img src={"https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_1.jpg"} alt="image" className="ui avatar image"/> */}
                     <div className="post-username-container">{post.username}</div>
                     <div className="post-date-container">{post.date.substr(0,10)}</div>
                     {this.renderDeleteEdit(post)}

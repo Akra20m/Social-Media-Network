@@ -4,6 +4,7 @@ import {Link,Redirect} from 'react-router-dom';
 import {deletePost,fetchUserPosts} from '../actions';
 import PostEdit from './PostEdit';
 import Header from './Header';
+import Personal from './Personal';
 import '../style.css';
 
 
@@ -34,8 +35,11 @@ class Profile extends React.Component {
         if((post.username === this.props.user.username) || this.props.user.role) {
             return (
                 <div className="post-buttons-containter">
-                <button onClick={this.editOpen.bind(this,post.id)}>Edit</button>
-                <button onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button>
+                {/* <button className="button-edit" onClick={this.editOpen.bind(this,post.id)}>Edit</button>
+                <button className="button-delete" onClick={this.deleteOnClick.bind(this,post.id)}>Delete</button> */}
+                <i className="edit icon large button-edit" onClick={this.editOpen.bind(this,post.id)} Aria-label="click to edit post"></i>
+                <i className="trash icon large button-delete" onClick={this.deleteOnClick.bind(this,post.id)} Aria-label="click to delete post"></i>
+
                 </div>
             )};
     } 
@@ -69,6 +73,7 @@ class Profile extends React.Component {
             <div className="cover_page" style={{backgroundColor:'#f0f2f5'}}>
             <div className="test1">
             <Header/>
+            {/* <Personal/> */}
             <div className="posts_container">
                 {this.checkMore()}      
                 {this.renderPosts()}

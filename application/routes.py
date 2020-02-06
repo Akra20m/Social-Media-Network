@@ -58,7 +58,7 @@ def login():
     if usernamecandidate != None:
         if sha256_crypt.verify(password,usernamecandidate.password):
             access_token = create_access_token(identity=username, expires_delta=timedelta(hours=3))
-            return jsonify({'msg':'Login succeed','access_token':access_token,'username':username,'isLoggedIn':True,'role':usernamecandidate.role})
+            return jsonify({'msg':'Login succeed','access_token':access_token,'username':username,'email':usernamecandidate.email,'isLoggedIn':True,'role':usernamecandidate.role})
         else:
             return jsonify({'msg':'Login faild. Wrong Password'}), 422
     else:

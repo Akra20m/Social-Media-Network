@@ -2,6 +2,8 @@ import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {createComment,fetchComments} from '../actions';
+import ReactEmoji from 'react-emoji';
+
 import '../style.css';
 
 
@@ -10,7 +12,7 @@ class Comment extends React.Component {
 
     renderInput({input,placeholder}){
         return (
-               <textarea className="input-post" {...input} maxLength="150" placeholder={placeholder} rows="2" required></textarea>
+               <textarea className="input-comment" {...input} maxLength="150" placeholder={placeholder} rows="2" required></textarea>
         );
     }
 
@@ -29,7 +31,7 @@ class Comment extends React.Component {
             return this.props.comment[`${id}`].map(comment => {
                 return (
                     <div className="comment" key={comment.id}>
-                        <div className="post-text-container">{comment.comment}</div>
+                        <div className="post-text-container">{ReactEmoji.emojify(comment.comment)}</div>
                         <div className="post-username-container">{comment.username}</div>
                         <div className="post-date-container">{comment.date.substr(0,10)}</div>
                     </div>

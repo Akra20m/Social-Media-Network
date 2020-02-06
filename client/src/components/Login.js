@@ -13,7 +13,7 @@ class Login extends React.Component {
         return (
             <div>
                 <label>{label}</label>
-                <input {...input} type={type} required/>
+                <input {...input} type={type} className="ui input" required/>
             </div>
         );
     }
