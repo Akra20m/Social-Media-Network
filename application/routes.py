@@ -135,7 +135,8 @@ def delete_put_post(id:int):
             id=posts_count
         else:
             noMore=False
-        posts_list= Posts.query.all()[-id:]
+        # posts_list= Posts.query.all()[-id:]
+        posts_list= Posts.query.order_by(Posts.id.desc()).limit(id).all()
         result=posts_schema.dump(posts_list)
         return jsonify(result,{'noMoreAll':noMore})
 
