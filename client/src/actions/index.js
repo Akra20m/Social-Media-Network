@@ -122,3 +122,26 @@ export const fetchComments = (id,token) => async dispatch => {
             dispatch({type: 'FETCH_COMMENTS', payload: obj});
     } catch(err){ console.log(err.response)};
 }
+
+export const fetchAvatars = (token) => async dispatch => {
+    try{
+        const response = await flaskAPI.get(`/avatar`, {
+            headers: {
+            Authorization: `Bearer ${token}`}});
+        if(response.status===201){
+            dispatch({type: 'FETCH_AVATARS', payload: response.data});
+        }
+    } catch(err){ console.log(err.response)};
+}
+
+export const updateAvatar = (id,username,token) => async dispatch => {
+    try{
+        const response = await flaskAPI.get(`/avatar/${id}`, {
+            headers: {
+            Authorization: `Bearer ${token}`}});
+        if(response.status===201){
+            let obj={'avatar':id,'username':username};
+            dispatch({type: 'UPDATE_AVATAR', payload: [obj]});
+        }
+    } catch(err){ console.log(err.response)};
+}

@@ -1,6 +1,7 @@
 from application import app, db, ma
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
+import datetime
 
 
 class Users(db.Model):
@@ -18,6 +19,16 @@ class Users(db.Model):
         self.username=username
         self.password=password
         self.role=0
+
+class Personal(db.Model):
+    __tablename__='personal'
+    id=db.Column(db.Integer, primary_key=True)
+    username=db.Column(db.Text, unique=True)
+    avatar=db.Column(db.Integer, unique=False)
+
+    def __init__(self,username,avatar):
+        self.username=username
+        self.avatar=avatar
 
 class Posts(db.Model):
     __tablename__='posts'
@@ -45,10 +56,9 @@ class Comments(db.Model):
         self.username=username
         self.date=date
 
-class UserSchema(ma.Schema):
+class AvatarSchema(ma.Schema):
     class Meta:
-        fields= ('id', 'name', 'email', 'username', 'password', 'role')
-
+        fields= ('username', 'avatar')
 
 class PostSchema(ma.Schema):
     class Meta:

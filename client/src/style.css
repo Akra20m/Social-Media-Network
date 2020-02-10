@@ -113,13 +113,13 @@ label,input {
 .main_button:hover {
     background-color: #0249ab;
 }
-.header {
+.header-custom {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     flex-basis: 100%;
     margin-bottom: 10px;
-
+    margin-top: 10px;
 }
 
 .nav-item {
@@ -245,19 +245,25 @@ span:hover {
     background-color: lightblue;
 }
 .personal-container{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    /* grid-auto-rows: 100px; */
+    display: flex;
+    flex-wrap: wrap;
     border: 2px solid black;
     margin: 20px auto;
-    min-height: 40vh;
+    /* min-height: 40vh; */
 }
 .image-container {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    margin: 0 auto;
+    max-width: 400px;
 }
-.image-personal {
-    max-width: 300px;
-    margin: 10px 10px;
+.info-container {
+    margin: auto ;
+    padding: 10px;
+    align-self:center;
+}
+.dropdown-icon {
+    margin-top: 15px;
+}
+.info-text {
+    font-weight:600;
+    letter-spacing: 1px;
 }

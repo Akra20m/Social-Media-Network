@@ -1,10 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link,Redirect} from 'react-router-dom';
+import ReactEmoji from 'react-emoji';
 import {deletePost,fetchUserPosts} from '../actions';
 import PostEdit from './PostEdit';
 import Header from './Header';
 import Personal from './Personal';
+import {avatarInfo} from '../helper';
+
 import '../style.css';
 
 
@@ -48,7 +51,8 @@ class Profile extends React.Component {
         return this.props.post.map(post => {
                 return (
                     <div className="post" key={post.id}>
-                        <div className="post-text-container">{post.post}</div>
+                        <div className="post-text-container">{ReactEmoji.emojify(post.post)}</div>
+                        <img src={this.props.avatar[post.username]? avatarInfo[this.props.avatar[post.username].avatar]: "https://semantic-ui.com/images/avatar2/large/elyse.png"} alt="image" className="ui avatar image"/>
                         <div className="post-username-container">{post.username}</div>
                         <div className="post-date-container">{post.date.substr(0,10)}</div>
                         {this.renderDeleteEdit(post)}
@@ -73,7 +77,7 @@ class Profile extends React.Component {
             <div className="cover_page" style={{backgroundColor:'#f0f2f5'}}>
             <div className="test1">
             <Header/>
-            {/* <Personal/> */}
+            <Personal/>
             <div className="posts_container">
                 {this.checkMore()}      
                 {this.renderPosts()}
@@ -86,7 +90,7 @@ class Profile extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {user: state.user, post: Object.values(state.userPost)};
+    return {user: state.user, post: Object.values(state.userPost), avatar:state.avatar};
 };
 
 export default connect(mapStateToProps,{fetchUserPosts,deletePost})(Profile);

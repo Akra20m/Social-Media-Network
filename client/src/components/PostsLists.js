@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import ReactEmoji from 'react-emoji';
 import PostEdit from './PostEdit';
 import Comment from './Comment';
+import {avatarInfo} from '../helper';
 import {fetchPosts, fetchSomePosts, deletePost} from '../actions';
 import '../style.css';
 
@@ -52,7 +53,7 @@ class PostsLists extends React.Component {
             return (
                 <div className="post" key={post.id}>
                     <div className="post-text-container">{ReactEmoji.emojify(post.post)}</div>
-                    {/* <img src={"https://upload.wikimedia.org/wikipedia/commons/0/0b/Cat_poster_1.jpg"} alt="image" className="ui avatar image"/> */}
+                    <img src={this.props.avatar[post.username]? avatarInfo[this.props.avatar[post.username].avatar]: "https://semantic-ui.com/images/avatar2/large/elyse.png"} alt="image" className="ui avatar image"/>
                     <div className="post-username-container">{post.username}</div>
                     <div className="post-date-container">{post.date.substr(0,10)}</div>
                     {this.renderDeleteEdit(post)}
@@ -86,7 +87,7 @@ class PostsLists extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {user: state.user, post: Object.values(state.post)};
+    return {user: state.user, post: Object.values(state.post),avatar:state.avatar};
 };
 
 export default connect(mapStateToProps,{fetchPosts,fetchSomePosts,deletePost})(PostsLists);

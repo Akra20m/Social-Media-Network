@@ -6,13 +6,12 @@ from flask_marshmallow import Marshmallow
 from passlib.hash import sha256_crypt
 from flask_jwt_extended import jwt_required, create_access_token, get_jwt_identity, get_raw_jwt
 from datetime import datetime, timedelta
-from .models import Posts, Users, Comments, UserSchema, PostSchema, CommentSchema
+from .models import Posts, Users, Comments, Personal, AvatarSchema, PostSchema, CommentSchema
 import os
 
 blacklist = set()
 
-users_schema = UserSchema(many=True)
-user_schema = UserSchema()
+avatar_schema = AvatarSchema(many=True)
 posts_schema = PostSchema(many=True)
 post_schema = PostSchema()
 comments_schema = CommentSchema(many=True)
@@ -39,7 +38,6 @@ def users():
     username=request.json.get('username').lower()
     user_email=Users.query.filter_by(email=email).first()
     user_username=Users.query.filter_by(username=username).first()
-
     if user_email or user_username:
         return jsonify({'msg':'This email/username exists in our database'}), 409
 
@@ -52,7 +50,6 @@ def users():
 @app.route('/login', methods=['POST'])
 def login():
     username=request.json.get("username").lower()
-    print(username,type(username))
     password=request.json.get("password")
     usernamecandidate=Users.query.filter_by(username=username).first()
     if usernamecandidate != None:
@@ -173,7 +170,7 @@ def delete_put_post(id:int):
             return jsonify({'msg':'This post does not exist in our database'}), 404
 
 
-@app.route("/posts",methods=['GET','POST'])
+@app.route('/posts',methods=['GET','POST'])
 @jwt_required
 def posts():
     if request.method == 'GET':
@@ -190,7 +187,30 @@ def posts():
         posts_list = Posts.query.all()
         result=posts_schema.dump(posts_list)
         return jsonify(result), 201
-            
+#fetch all avatars
+@app.route('/avatar')
+@jwt_required
+def avatars():
+    users = Personal.query.all()
+    result=avatar_schema.dump(users)
+    return jsonify(result), 201
+
+#update avatar
+@app.route('/avatar/<int:id>')
+@jwt_required
+def avatar(id:int):
+    current_user = get_jwt_identity()
+    user = Personal.query.filter_by(username=current_user).first()
+    if user:
+        user.avatar=id
+        db.session.commit()
+        return jsonify({'msg':'avatar updated'}), 201
+    else:
+        avatar_object=Personal(current_user,id)
+        db.session.add(avatar_object)
+        db.session.commit()
+        return jsonify({'msg':'avatar updated'}), 201
+
 
 # Revoke user access token
 @app.route('/logout', methods=['DELETE'])

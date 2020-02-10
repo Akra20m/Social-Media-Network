@@ -19,7 +19,9 @@ class Login extends React.Component {
     }
 
     onSubmit = (values) => {
-        this.props.loginUser(values)
+        this.props.loginUser(values);
+        this.props.change(`username`,null);
+        this.props.change(`password`,null);
     }
 
     errormsg() {

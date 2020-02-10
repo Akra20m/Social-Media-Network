@@ -3,6 +3,7 @@ import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import {createComment,fetchComments} from '../actions';
 import ReactEmoji from 'react-emoji';
+import {avatarInfo} from '../helper';
 
 import '../style.css';
 
@@ -32,6 +33,7 @@ class Comment extends React.Component {
                 return (
                     <div className="comment" key={comment.id}>
                         <div className="post-text-container">{ReactEmoji.emojify(comment.comment)}</div>
+                        <img src={this.props.avatar[comment.username]? avatarInfo[this.props.avatar[comment.username].avatar]: "https://semantic-ui.com/images/avatar2/large/elyse.png"} alt="image" className="ui avatar image"/>
                         <div className="post-username-container">{comment.username}</div>
                         <div className="post-date-container">{comment.date.substr(0,10)}</div>
                     </div>
@@ -55,7 +57,7 @@ class Comment extends React.Component {
 }
 
 const mapStateToProps = state => {
-    return {user: state.user, comment: state.comment};
+    return {user: state.user, comment: state.comment, avatar:state.avatar};
 };
 
 export default connect(mapStateToProps,{createComment,fetchComments})(reduxForm({
