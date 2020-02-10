@@ -103,7 +103,7 @@ def delete_user(username:str):
         return jsonify({'msg':'This user does not exist in our database'}), 404
 
 
-#Fetch comments of a post / Submit a new post
+#Fetch comments of a post / Submit a new post 
 @app.route("/comments/<int:id>",methods=['GET','POST'])
 @jwt_required
 def comments(id:int):
@@ -121,6 +121,26 @@ def comments(id:int):
         comments_list = Comments.query.filter_by(postid=id)
         result=comments_schema.dump(comments_list)
         return jsonify(result), 201
+
+#Delete comment
+@app.route("/comments/<int:id>/<int:postid>",methods=['DELETE'])
+@jwt_required
+def commentdelete(id:int,postid:int):
+    current_user = get_jwt_identity()
+    user = Users.query.filter_by(username=current_user).first()
+    comment = Comments.query.filter_by(id=id).first()
+    if comment:
+        if ((comment.username == current_user) or user.role):
+            db.session.delete(comment)
+            db.session.commit()
+            comments_list = Comments.query.filter_by(postid=postid)
+            result=comments_schema.dump(comments_list)
+            return jsonify(result)
+        else:
+            return jsonify({'msg':'Unauthorized'}), 401
+    else:
+        return jsonify({'msg':'This comment does not exist in our database'}), 404
+
 
 #Delete/Edit a post and fetch certain posts
 @app.route('/posts/<int:id>',methods=['DELETE','PUT','GET'])
@@ -147,7 +167,6 @@ def delete_put_post(id:int):
                 comments = Comments.query.filter(Comments.postid==id).delete()
                 db.session.delete(post)
                 db.session.commit()
-                db.session.commit()
                 return jsonify({'msg':'Post Deleted'}), 202
             else:
                 return jsonify({'msg':'Unauthorized'}), 401
@@ -169,6 +188,7 @@ def delete_put_post(id:int):
                 return jsonify({'msg':'Unauthorized'}), 401
         else:
             return jsonify({'msg':'This post does not exist in our database'}), 404
+
 
 
 @app.route('/posts',methods=['GET','POST'])

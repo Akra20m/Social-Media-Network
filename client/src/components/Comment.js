@@ -1,7 +1,7 @@
 import React from 'react';
 import {Field, reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
-import {createComment,fetchComments} from '../actions';
+import {createComment,fetchComments,deleteComment} from '../actions';
 import ReactEmoji from 'react-emoji';
 import {avatarInfo} from '../helper';
 
@@ -27,6 +27,18 @@ class Comment extends React.Component {
     componentDidMount(){
         this.props.fetchComments(this.props.id,this.props.user.access_token);
     }
+    deleteOnClick = (id) => {
+        this.props.deleteComment(this.props.user.access_token,id,this.props.id);
+        }
+
+    renderDelete = (comment) => {
+        if((comment.username === this.props.user.username) || this.props.user.role) {
+            return (
+                <div className="post-buttons-containter">
+                    <i className="trash icon large button-delete" onClick={this.deleteOnClick.bind(this,comment.id)} Aria-label="click to delete post"></i>
+                </div>
+            )};
+    }
     renderComments = (id) => {
         if(this.props.comment[`${id}`]){
             return this.props.comment[`${id}`].map(comment => {
@@ -36,8 +48,9 @@ class Comment extends React.Component {
                         <img src={this.props.avatar[comment.username]? avatarInfo[this.props.avatar[comment.username].avatar]: "https://semantic-ui.com/images/avatar2/large/elyse.png"} alt="image" className="ui avatar image"/>
                         <div className="post-username-container">{comment.username}</div>
                         <div className="post-date-container">{comment.date.substr(0,10)}</div>
+                        {this.renderDelete(comment)}
                     </div>
-                );
+                ); 
             });
     }}
 
@@ -60,6 +73,6 @@ const mapStateToProps = state => {
     return {user: state.user, comment: state.comment, avatar:state.avatar};
 };
 
-export default connect(mapStateToProps,{createComment,fetchComments})(reduxForm({
+export default connect(mapStateToProps,{createComment,fetchComments,deleteComment})(reduxForm({
     form: 'comment'
 })(Comment));

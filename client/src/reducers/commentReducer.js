@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {createComment} from '../actions';
+import {createComment,fetchComments,deleteComment} from '../actions';
 
 
 export default (state={}, action) => {
@@ -7,6 +7,8 @@ export default (state={}, action) => {
         case 'CREATE_COMMENT':
             return {...state,...action.payload};
         case 'FETCH_COMMENTS':
+            return {...state,...action.payload};
+        case 'DELETE_COMMENT':
             return {...state,...action.payload};
         default:
             return state;

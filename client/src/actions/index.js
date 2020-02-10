@@ -123,6 +123,17 @@ export const fetchComments = (id,token) => async dispatch => {
     } catch(err){ console.log(err.response)};
 }
 
+export const deleteComment = (token,id,postid) => async dispatch => {
+    try {
+        const response = await flaskAPI.delete(`/comments/${id}/${postid}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }});
+            let obj={[postid]:response.data}
+            dispatch({type: 'DELETE_COMMENT', payload: obj});
+        } catch(err){console.log(err.response)};
+}
+
 export const fetchAvatars = (token) => async dispatch => {
     try{
         const response = await flaskAPI.get(`/avatar`, {
@@ -145,3 +156,4 @@ export const updateAvatar = (id,username,token) => async dispatch => {
         }
     } catch(err){ console.log(err.response)};
 }
+

@@ -9,37 +9,37 @@ const avatarInfo = {
 
 const avatarOptions = [
     {
-        key: 'Jenny Hess',
+        key: '1',
         // text: 'Jenny Hess',
         value: '1',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/elyse.png' },
     },
     {
-        key: 'Elliot Fu',
+        key: '2',
         // text: 'Elliot Fu',
         value: '2',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/kristy.png' },
     },
     {
-        key: 'Stevie Feliciano',
+        key: '3',
         // text: 'Stevie Feliciano',
         value: '3',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/lena.png' },
     },
     {
-        key: 'Stevie Feliciano',
+        key: '4',
         // text: 'Stevie Feliciano',
         value: '4',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/lindsay.png' },
     },
     {
-        key: 'Stevie Feliciano',
+        key: '5',
         // text: 'Stevie Feliciano',
         value: '5',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/mark.png' },
     },
     {
-        key: 'Stevie Feliciano',
+        key: '6',
         // text: 'Stevie Feliciano',
         value: '6',
         image: { avatar: true, src: 'https://semantic-ui.com/images/avatar2/large/matthew.png' },
