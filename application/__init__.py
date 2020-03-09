@@ -1,4 +1,3 @@
-from application import routes
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -15,3 +14,5 @@ CORS(app)
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 jwt = JWTManager(app)
+
+from application import routes
