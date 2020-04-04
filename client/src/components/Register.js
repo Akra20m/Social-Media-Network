@@ -9,12 +9,17 @@ class Register extends React.Component {
     return (
       <div>
         <label>{label}</label>
-        <input {...input} type={type} required />
+        <input
+          {...input}
+          type={type}
+          className="ui input input-custom"
+          required
+        />
       </div>
     );
   }
 
-  onSubmit = values => {
+  onSubmit = (values) => {
     this.props.createUser(values);
   };
 
@@ -73,12 +78,12 @@ class Register extends React.Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.user };
 };
 
 export default connect(mapStateToProps, { createUser })(
   reduxForm({
-    form: "register"
+    form: "register",
   })(Register)
 );

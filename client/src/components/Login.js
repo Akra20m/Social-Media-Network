@@ -10,12 +10,17 @@ class Login extends React.Component {
     return (
       <div>
         <label>{label}</label>
-        <input {...input} type={type} className="ui input" required />
+        <input
+          {...input}
+          type={type}
+          className="ui input input-custom"
+          required
+        />
       </div>
     );
   }
 
-  onSubmit = values => {
+  onSubmit = (values) => {
     this.props.loginUser(values);
     this.props.change(`username`, null);
     this.props.change(`password`, null);
@@ -62,12 +67,12 @@ class Login extends React.Component {
     );
   }
 }
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return { user: state.user };
 };
 
 export default connect(mapStateToProps, { loginUser })(
   reduxForm({
-    form: "login"
+    form: "login",
   })(Login)
 );
